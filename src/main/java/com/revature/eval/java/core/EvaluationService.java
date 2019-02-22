@@ -15,7 +15,20 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		char[] word = string.toCharArray();
+		char[] reverse = new char[word.length];
+		int posIndex = 0;
+		String reverseWord ="";
+		
+		for(int i = word.length - 1; i >= 0; i--) {
+			reverse[posIndex] = word[i];
+			posIndex++;
+		}
+		
+		for(char c : reverse) {
+			reverseWord += c;
+		}	
+		return reverseWord;
 	}
 
 	/**
@@ -27,8 +40,12 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String newAc = "";
+		String[] phraseArr = phrase.split(" ");
+		for(int i = 0; i < phraseArr.length; i++) {
+			newAc = newAc + phraseArr[i].substring(0, 1).toUpperCase();
+		}
+		return newAc;
 	}
 
 	/**
@@ -82,17 +99,30 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			if((this.sideOne == this.sideTwo) && (this.sideOne == this.sideThree)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			
+			if((this.sideOne == this.sideTwo) || (this.sideOne == this.sideThree) || (this.sideTwo == this.sideThree)){
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			if((this.sideOne != this.sideTwo) && (this.sideOne != this.sideThree) && (this.sideTwo != this.sideThree)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 	}
@@ -114,6 +144,29 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
+		
+		// character arrays that hold the letters for each possible scoring about
+		String onePointer = "AEIOULNRST";
+		char[] twoPointer = new char[] {'D','G'};
+		char[] threePointer = new char[] {'B','C','M','P'};
+		char[] fourPointer = new char[] {'F','H','V','W','Y'};
+		char[] fivePointer = new char[] {'K'};
+		char[] eightPointer = new char[] {'X'};
+		char[] tenPointer = new char[] {'Q','Z'};
+		
+		// score tracker
+		int score = 0;
+		
+		// convert the user word to another character array
+		char[] playerWord = string.toCharArray();
+		
+		// get the score for each character 
+		for(int i = 0; i < playerWord.length; i++) {
+			if() {
+				
+			}
+		}
+		
 		return 0;
 	}
 
