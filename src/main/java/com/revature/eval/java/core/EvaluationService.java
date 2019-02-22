@@ -142,32 +142,55 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public int getScrabbleScore(String string) {
+	public static int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
 		
-		// character arrays that hold the letters for each possible scoring about
+		// String representations of each letter and how much each is worth
 		String onePointer = "AEIOULNRST";
-		char[] twoPointer = new char[] {'D','G'};
-		char[] threePointer = new char[] {'B','C','M','P'};
-		char[] fourPointer = new char[] {'F','H','V','W','Y'};
-		char[] fivePointer = new char[] {'K'};
-		char[] eightPointer = new char[] {'X'};
-		char[] tenPointer = new char[] {'Q','Z'};
+		String twoPointer = "DG";
+		String threePointer = "BCMP";
+		String fourPointer = "FHVWY";
+		String fivePointer = "K";
+		String eightPointer = "X";
+		String tenPointer = "QZ";
 		
 		// score tracker
 		int score = 0;
 		
-		// convert the user word to another character array
-		char[] playerWord = string.toCharArray();
-		
+		// convert the user word to an String array that is the length of the word
+		String[] playerWord = new String[string.length()];
+	 
+		// iterate through the created array and fill each index with the respective character by creating a substring of the word
+		for(int i = 0; i < string.length(); i++) {
+			playerWord[i] = string.substring(i, i+1);
+		}
+			
 		// get the score for each character 
-		for(int i = 0; i < playerWord.length; i++) {
-			if() {
-				
+		for( String s : playerWord) {
+			// check to see if the current is within the string of letters worth one point, if so add 1 point to the score
+			if(onePointer.contains(s.toUpperCase())) {
+				score += 1;
+			// check to see if the current is within the string of letters worth two points, if so add 2 points to the score
+			} else if(twoPointer.contains(s.toUpperCase())) {
+				score += 2;
+			// check to see if the current is within the string of letters worth three points, if so add 3 points to the score
+			} else if(threePointer.contains(s.toUpperCase())) {
+				score += 3;
+			// check to see if the current is within the string of letters worth four points, if so add 4 points to the score
+			} else if(fourPointer.contains(s.toUpperCase())) {
+				score += 4;
+			// check to see if the current is within the string of letters worth five points, if so add 5 points to the score
+			} else if(fivePointer.contains(s.toUpperCase())) {
+				score += 5;
+			// check to see if the current is within the string of letters worth eight points, if so add 8 points to the score
+			} else if(eightPointer.contains(s.toUpperCase())) {
+				score += 8;
+			// check to see if the current is within the string of letters worth ten points, if so add 10 points to the score
+			} else if(tenPointer.contains(s.toUpperCase())) {
+				score += 10;
 			}
 		}
-		
-		return 0;
+		return score;
 	}
 
 	/**
