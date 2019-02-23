@@ -269,7 +269,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
+		
 		return null;
 	}
 
@@ -312,7 +312,15 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
+			if (sortedList.size() == 0) {
+				return -1;			
+			}
+			else {
+				int midpoint = (sortedList.size()/2);
+				//if(sortedList[t] > t)
+				
+			}
+		
 			return 0;
 		}
 
@@ -349,7 +357,17 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
+//		String vowels = "aeiou";
+//		String consonants = "bcdfghjklmnpqrstvwxyz";
+//		String[] word = new String[string.length()];
+//		String pigLatin ="";
+//		
+//		if ((string.startsWith("A".toLowerCase())) || (string.startsWith("E".toLowerCase())) || (string.startsWith("I".toLowerCase())) || (string.startsWith("O".toLowerCase())) || (string.startsWith("U".toLowerCase()))){
+//		 pigLatin = string + "ay";
+//		} else {
+//			
+//		}
+//		return pigLatin;
 		return null;
 	}
 
@@ -369,8 +387,33 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		// convert the input into a string
+		String inputString = Integer.toString(input);
+		// the number of digits will be determined by the length of the string. this will also serve as the exponent each digit will be raised to
+		int numOfDigits = inputString.length();
+		// will be the calculated sum
+		int sum = 0;
+		// will represent each digit after it is raised to a power
+		int poweredNum = 0;
+		
+		// new integer array to hold each digit
+		int[] numberArray = new int[inputString.length()];
+		// populate the integer array with each digit
+		for (int i = 0; i < numberArray.length; i++) {
+			numberArray[i] = Integer.parseInt(inputString.substring(i, i+1));
+		}
+		// for each digit, calculate the power and add it to the sum
+		for(int num : numberArray) {
+			poweredNum = (int) Math.pow(num, numOfDigits);
+			sum += poweredNum;
+		}		
+		// if the sum is equal to the input, it is an Armstrong number
+		if(sum == input) {
+			 return true;
+		// otherwise it isn't
+		} else {			
+			return false;
+		}
 	}
 
 	/**
