@@ -427,7 +427,6 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Integer> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
 		return null;
 	}
 
@@ -579,8 +578,41 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		// this string contains every letter in the alphabet
+		String letterString = "abcdefghijklmnopqrstuvwxyz";
+		// this string will be the placeholder for all the current letters in the word
+		String currentLetters = "";
+		// a string array which represents all the letters in the given word 
+		String[] letters = new String[string.length()];
+		// a counter that will be used to account for each letter in the alphabet
+		int count = 0;
+		
+		// populate the letter array with the letters from the word
+		for(int i = 0; i < string.length(); i++) {
+			letters[i] = string.substring(i, i+1).toLowerCase();
+		}
+		
+		// check each letter in the array
+		for(String s : letters) {
+			// remove the spaces to make one word to work with
+			if(s.equals(" ")) {
+				string = string.replace(" ", "");			
+			}
+			// check to see if the current letter is valid, and check to see if it has already been accounted for or not
+			if(letterString.contains(s) == true && currentLetters.contains(s) == false) {
+				// add the current letter to the placeholder currentLetters string
+				currentLetters += s;
+				// increment the number of current letters counter
+				count++;
+			}
+		}			
+		// since there are 26 letters in the alphabet, the counter will should always be equal to 26 when the given word or sentence is a pangram
+		if(count == 26) {
+			return true;
+		//  otherwise it won't be
+		} else {
+			return false;
+		}
 	}
 
 	/**
