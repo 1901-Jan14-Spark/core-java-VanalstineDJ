@@ -14,7 +14,6 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String reverse(String string) {
-		// TODO Write an implementation for this method declaration
 		char[] word = string.toCharArray();
 		char[] reverse = new char[word.length];
 		int posIndex = 0;
@@ -142,9 +141,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public static int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		
+	public int getScrabbleScore(String string) {		
 		// String representations of each letter and how much each is worth
 		String onePointer = "AEIOULNRST";
 		String twoPointer = "DG";
@@ -224,9 +221,42 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
-	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+	public String cleanPhoneNumber(String string) {	
+		String newNumber = "";
+		String zeroToNine = "0123456789";
+		
+		// remove all the spaces and unwanted characters from the phone number 
+		newNumber = string.replace("(", "").replace(")", "").replace(".","").replace("-", "").replace(" ", "").trim();
+		// check to see if the country code is present in the format
+		if(newNumber.startsWith("+1")) {
+			newNumber = newNumber.substring(2);	
+		} else if(newNumber.startsWith("1") && newNumber.length() > 10) {
+			newNumber = newNumber.substring(1);
+		}
+		
+		// check to see that the number is the right length, if not throw an exception
+		if((newNumber.length() > 10) || newNumber.length() < 10) {
+			throw new IllegalArgumentException();
+		// when the number is the right length
+		} else if (newNumber.length() == 10) {
+			// create a string array representation of each digit in the phone number
+			String[] phoneNumber = new String[newNumber.length()];
+			for (int i = 0; i < newNumber.length(); i++) {
+				phoneNumber[i] = newNumber.substring(i, i +1);
+			}
+			// if the first digit or fourth digit are less than 1, throw an exception
+			if((Integer.parseInt(phoneNumber[0]) < 2) || (Integer.parseInt(phoneNumber[3]) < 2 )) {
+				throw new IllegalArgumentException();				
+			} else {
+				// if any of the digits are not valid numbers, throw an exception
+				for(String s : phoneNumber) {
+					if(zeroToNine.contains(s) == false) {
+						throw new IllegalArgumentException();
+					}
+				}
+			}
+		}		
+		return newNumber;
 	}
 
 	/**
