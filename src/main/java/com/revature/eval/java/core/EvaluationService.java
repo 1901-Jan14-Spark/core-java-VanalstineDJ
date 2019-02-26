@@ -1,6 +1,13 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAmount;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -97,7 +104,6 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
 			if((this.sideOne == this.sideTwo) && (this.sideOne == this.sideThree)) {
 				return true;
 			} else {
@@ -105,9 +111,7 @@ public class EvaluationService {
 			}
 		}
 
-		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			
+		public boolean isIsosceles() {			
 			if((this.sideOne == this.sideTwo) || (this.sideOne == this.sideThree) || (this.sideTwo == this.sideThree)){
 				return true;
 			} else {
@@ -116,14 +120,12 @@ public class EvaluationService {
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
 			if((this.sideOne != this.sideTwo) && (this.sideOne != this.sideThree) && (this.sideTwo != this.sideThree)) {
 				return true;
 			} else {
 				return false;
 			}
 		}
-
 	}
 
 	/**
@@ -269,8 +271,24 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		
-		return null;
+		// create a map to store the words
+		Map<String, Integer> wordMap = new HashMap<String, Integer>();
+		// split the string into an array that contains each word
+		String[] words = string.split("\\W+");
+		// variable for how many times each word appears
+		int occurance = 0;
+		// iterate through all the words
+		for(String word : words) {
+			// if the word isn't already in the map, add it
+			if(!wordMap.containsKey(word)) {
+				wordMap.put(word, 1);
+			} else {
+				// if it is, add another instance of it
+				occurance = wordMap.get(word);
+				wordMap.put(word, occurance + 1);
+			}
+		}	
+		return wordMap;
 	}
 
 	/**
@@ -427,7 +445,20 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Integer> calculatePrimeFactorsOf(long l) {
-		return null;
+		List<Integer> factors = new ArrayList<>();
+		while(l%2 == 0) {
+			factors.add(2);
+			l = l/2;	
+		}
+		int value = 3;
+		for(int i = 3; i <= Math.sqrt(l); value += 2) {
+			while(l%i == 0) {
+				factors.add(i);
+				l = l/i;
+			}		
+		}
+		System.out.println(factors.toString());
+		return factors;
 	}
 
 	/**
@@ -590,8 +621,7 @@ public class EvaluationService {
 		// populate the letter array with the letters from the word
 		for(int i = 0; i < string.length(); i++) {
 			letters[i] = string.substring(i, i+1).toLowerCase();
-		}
-		
+		}	
 		// check each letter in the array
 		for(String s : letters) {
 			// remove the spaces to make one word to work with
@@ -624,8 +654,8 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		long time = (long) Math.pow(10, 9);		
+		return given.plus(time, ChronoUnit.DAYS);
 	}
 
 	/**
@@ -642,8 +672,27 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		// sum variable
+		int sum = 0;
+		// HashSet used to store the multiples and insure duplicates won't be added
+		HashSet<Integer> numbers = new HashSet<>();
+		// iterate through each number in the set
+		for(int j = 0; j < set.length; j++) {
+			// the respective iteration
+			int increment = 1;
+			// the multiple has to be less than i
+			while(set[j]*increment < i) {
+				// add the multiple to the HashSet
+				numbers.add(set[j]*increment);	
+				// increment the respective iteration, which represents the current multiple
+				increment++;
+			}		
+		}
+		// add all the numbers in the HashSet
+		for(Integer number : numbers) {
+			sum += (int) number;
+		}
+		return sum;
 	}
 
 	/**
@@ -683,8 +732,57 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		// validate that there's only numbers in the given string
+		boolean result = false;
+		// only numbers and spaces are valid characters
+		String validInput = " 0123456789";
+		// create a new array to hold each value of the input
+		String[] inputString = new String[string.length()];
+		for(int i = 0; i < string.length(); i++) {
+			// populate the array whit each character
+			inputString[i] = string.substring(i, i+1);
+		}
+		//validate the input of the string
+		for(String s : inputString) {
+			if(!validInput.contains(s)) {
+				result = false;
+			}
+		}
+		// remove the spaces from the number
+		String number = string.replace(" ", "");
+		// int array to hold each number
+		int[] intNumber = new int[number.length()];		
+		for(int i = 0; i < number.length(); i++) {
+			// convert each "string" to a integer value
+			intNumber[i] = Integer.parseInt(number.substring(i, i+1));
+		}
+		int sum = 0;
+		// double every second digit starting from the right
+		for(int i = intNumber.length - 2; i >= 0; i--) {
+			int doubledNum = intNumber[i] * 2;
+			// check to make sure the digit is less than 9
+			if(doubledNum > 9) {
+				// replace the number at the specified index
+				 intNumber[i] = (doubledNum - 9);
+			} else {
+				// replace the number at the specified index
+				 intNumber[i] = doubledNum;
+			}
+			// a second decrement to make sure we're getting every other number
+			i--;
+		}	
+		for(int i = 0; i < intNumber.length; i ++) {
+			// get the sum
+			sum += intNumber[i];
+		}
+		if(sum % 10 == 0) {
+			// if the sum is divisible by 10 it is a valid Luhn number
+			result = true;
+		} else {
+			// else it is not
+			result = false;
+		}	
+		return result;
 	}
 
 	/**
@@ -715,8 +813,31 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		// split the string into an array of with each word
+		String[] words = string.split(" ");
+		// the first integer is the 3rd word in the array, parse that
+		int firstNum = Integer.parseInt(words[2]);
+		// the second integer is a bit more complicated: is is the last word in the array, but the question mark has to be removed
+		int secondNum = Integer.parseInt(words[words.length - 1].substring(0, words[words.length - 1].length() -1));
+		// answer variable
+		int answer = 0;
+		// the operation will always be the fourth word in the array
+		String operation = words[3];
+		// addition
+		if(operation.equals("plus")) {
+			answer = (firstNum + secondNum);
+		// subtraction
+		} else if(operation.equals("minus")) {
+			answer = (firstNum - secondNum);
+		// multiplication
+		} else if(operation.equals("multiplied")) {
+			answer = (firstNum * secondNum);
+		// division
+		}else if(operation.equals("divided")) {
+			answer = (firstNum / secondNum);
+		}
+		// return the newly assigned answer variable
+		return answer;
 	}
 
 }
