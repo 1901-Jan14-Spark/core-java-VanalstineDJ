@@ -326,20 +326,34 @@ public class EvaluationService {
 	 * binary search is a dichotomic divide and conquer search algorithm.
 	 * 
 	 */
-	static class BinarySearch<T> {
+	static class BinarySearch<T extends Comparable> {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			if (sortedList.size() == 0) {
-				return -1;			
+			// varibales to be used while sorting
+			int min = 0;
+			int max = sortedList.size();
+			// the midpoint to be used each time the list is split
+			int mid = max / 2;
+
+			// while the midpoint isn't equal to the index we're searching for, split the list and search again
+			while (!sortedList.get(mid).equals(t)) {
+				// if the index of t is greater than the current index and the min is still less than the max
+				if (sortedList.get(mid).compareTo(t) > 0 && min < max) {
+					// the max value now becomes the midpoint, search the first half of the list
+					max = mid;
+					// the midpoint becomes half the new min and max values
+					mid = (max - min) / 2 + min;
+				}
+				// if the index of t is less than smaller than the current index				
+				if (sortedList.get(mid).compareTo(t) < 0) {
+					// now the min value becomes the new midpoint, search the second half of the list
+					min = mid;
+					// the midpoint becomes half the new min and max values
+					mid = (max - min) / 2 + min;
+				}
 			}
-			else {
-				int midpoint = (sortedList.size()/2);
-				//if(sortedList[t] > t)
-				
-			}
-		
-			return 0;
+			return mid;
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -444,20 +458,26 @@ public class EvaluationService {
 	 * @param l
 	 * @return
 	 */
-	public List<Integer> calculatePrimeFactorsOf(long l) {
-		List<Integer> factors = new ArrayList<>();
-		while(l%2 == 0) {
-			factors.add(2);
-			l = l/2;	
-		}
-		int value = 3;
-		for(int i = 3; i <= Math.sqrt(l); value += 2) {
-			while(l%i == 0) {
-				factors.add(i);
-				l = l/i;
-			}		
-		}
-		System.out.println(factors.toString());
+	public List<Long> calculatePrimeFactorsOf(long l) {
+		// Kevin helped me with this one
+		List<Long> factors = new ArrayList<>();
+		
+		long value = 1;
+		while(value <= 1) {
+		long i = 2;
+			while(i < Math.sqrt(value)) {
+				if(value%i == 0) {
+					value++;
+					i = 2;
+				}
+				i++;
+			}
+			while(l % value == 0 && value > 1) {
+				factors.add(value);
+				l /= value;
+			}
+			value++;
+		}	
 		return factors;
 	}
 
@@ -515,8 +535,42 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		// Dat helped me with this one 
+		int prime = 3;
+
+		if (i <= 0) {
+			throw new IllegalArgumentException("Not valid number");
+		} else if (i == 1) {
+			return 2;
+		} else if (i == 2) {
+			return 3;
+		} else if (i == 3) {
+			return 5;
+		}
+
+		int count = 6;
+
+		while (prime <= i) {
+			if (isPrime(count)) {
+				prime++;
+			}
+			if (prime == i) {
+				return count;
+			}
+			count++;
+		}
+
+		return count;
+	}
+
+	private boolean isPrime(int number) {
+		boolean result = true;
+		for (int i = 2; i < Math.sqrt(number) + 1; i++) {
+			if (number % i == 0) {
+				return false;
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -591,8 +645,36 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isValidIsbn(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		// Dan showed and explained this to me when I asked, I want to note it's his work.  I plan to try ti implement it my own way on my own time
+		
+		StringBuilder modifiedString = new StringBuilder();
+		StringBuilder validCharacters = new StringBuilder("0123456789X");
+		int value = 0;
+		for(int i = 0; i<string.length(); i++) {
+			if(string.charAt(i) != '-') {
+				modifiedString.append(string.charAt(i));
+			}
+		}
+		for(int i = 0; i<modifiedString.length(); i++) {
+			if(validCharacters.indexOf(""+ modifiedString.charAt(i)) == -1) {
+				return false;
+			}
+		}
+		for(int i = 0; i < modifiedString.length() - 1; i++) {
+			value += Integer.parseInt("" + modifiedString.charAt(i)) * (10 - i);
+		}
+		if(modifiedString.charAt(modifiedString.length()-1) == 'X') {
+			value += 10;
+		}
+		else {
+			value += Integer.parseInt("" + modifiedString.charAt(modifiedString.length()-1)) * 1;
+		}
+		if(value%11 == 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**
